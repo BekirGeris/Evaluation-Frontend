@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import EvaluationModels from '../services/EvaluationModels';
+import EvaluationModelsService from '../services/EvaluationModelsService';
 
 export default function Dashboard() {
 
     const [evaluationModels, setEvaluationModels] = useState([])
 
     useEffect(()=>{
-        let evaluationModels  = new EvaluationModels();
-        evaluationModels.getEvaluationModels().then(result => setEvaluationModels(result.data.data))
+        let evaluationModelsService  = new EvaluationModelsService();
+        evaluationModelsService.getEvaluationModels().then(result => setEvaluationModels(result.data.data))
     })
 
   return (
-    <div>Dashboard</div>
+    <div>{evaluationModels}</div>
   )
 }

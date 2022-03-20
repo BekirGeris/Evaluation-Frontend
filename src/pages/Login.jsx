@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import UserService from "../services/UserService";
-import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-import Dashboard from "./Dashboard";
 import { useHistory } from "react-router-dom";
 
 export default function Login() {
@@ -14,11 +12,7 @@ export default function Login() {
 
     const onLogin = function(event) {
       let userService = new UserService();
-      let data = {
-          userName: userName,
-          password: password
-      }
-        userService.getByEmailAndPassword(data).then((result) => {
+        userService.getByUserNameAndPassword(userName, password).then((result) => {
           if(result.data.success){
             history.push("/Dashboard");
           }else{

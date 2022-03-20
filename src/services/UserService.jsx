@@ -1,18 +1,18 @@
 import axios from "axios"
 
-const BASE_URL = "http://localhost:9999/api/";
+const BASE_URL = "http://localhost:9999/api/users/";
 
 export default class UserService{
     
     getByUserId(userId){
-        return axios.get(BASE_URL + "users/getByUserId?userId=" + userId)
+        return axios.get(BASE_URL + "getByUserId?userId=" + userId)
     }
 
-    getByEmailAndPassword(data){
-        return axios.post(BASE_URL + "users/getByUserWithUserNameAndPassword", data)
+    getByUserNameAndPassword(userName, password){
+        return axios.get(BASE_URL + "getByUserWithUserNameAndPassword?password=" + password + "&userName=" + userName)
     }
 
-    addUser(data){
-        return axios.post(BASE_URL +  "users/add", data)
+    addUser(user){
+        return axios.post(BASE_URL +  "addUser", user)
     }
 }
