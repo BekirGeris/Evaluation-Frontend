@@ -3,6 +3,7 @@ import Login from './pages/Login';
 import { Route } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import { Grid } from 'semantic-ui-react';
+import HomePage from './pages/HomePage';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
             <Grid.Column>
                 <Route exact path="/" component={Login} />
                 <Route exact path="/Dashboard" component={Dashboard} />
+                <Route exact path="/HomePage" component={HomePage} />
             </Grid.Column>
         </Grid.Row>
       </Grid>

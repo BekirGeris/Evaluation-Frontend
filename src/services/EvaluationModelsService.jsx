@@ -5,7 +5,7 @@ const BASE_URL = "http://localhost:9999/api/evaluationnmodels/";
 export default class EvaluationModelsService{
 
     getEvaluationModelsByUserId(userId){
-        return axios.get(BASE_URL + "getByUserId?userId=" + userId)
+        return axios.get(BASE_URL + "getEvaluationModelsByUserId?userId=" + userId)
     }
 
     getParameterModelByParameterModelId(parameterModelId){

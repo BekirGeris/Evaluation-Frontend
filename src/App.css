@@ -1,25 +1,21 @@
 .App {
-  text-align: center;
+	text-align: left;
 }
 
-.category {
-  margin-left: 4em;
-}
-
-.Table {
-  margin-right: 4em;
-}
+.card {
+	width: 150px;                 /* Set width of cards */
+	display: flex;                /* Children use Flexbox */
+	flex-direction: column;       /* Rotate Axis */
+	border: 5px solid #180808;    /* Set up Border */
+	border-radius: 4px;           /* Slightly Curve edges */
+	overflow: hidden;             /* Fixes the corners */
+	margin: 6px;                  /* Add space between cards */
+  }
 
 .dashboard{
-	background-color: rgb(189, 208, 219);
-	border-radius: 10px;
-  	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 
-			0 10px 10px rgba(0,0,0,0.22);
-	position: relative;
-	overflow: hidden;
-	width: 1268px;
-	max-width: 100%;
-	min-height: 580px;
+	margin-top: 5%;
+	margin-left: 5%;
+	margin-right: 5%;
 }
 
 .form-group {

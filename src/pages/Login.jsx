@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import UserService from "../services/UserService";
-import 'react-circular-progressbar/dist/styles.css';
 import { useHistory } from "react-router-dom";
 
 export default function Login() {
@@ -14,7 +13,7 @@ export default function Login() {
       let userService = new UserService();
         userService.getByUserNameAndPassword(userName, password).then((result) => {
           if(result.data.success){
-            history.push("/Dashboard");
+            history.push("/HomePage");
           }else{
             alert(result.data.message);
           }
@@ -30,7 +29,7 @@ export default function Login() {
         }
         userService.addUser(data).then((result) => {
           if(result.data.success){
-            history.push("/Dashboard");
+            history.push("/HomePage");
           }else{
             alert(result.data.message);
           }
