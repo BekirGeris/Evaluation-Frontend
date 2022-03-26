@@ -12,8 +12,7 @@ function App() {
         <Grid.Row> 
             <Grid.Column>
                 <Route exact path="/" component={Login} />
-                <Route exact path="/Dashboard" component={Dashboard} />
-                <Route exact path="/HomePage" component={HomePage} />
+                <Route path="/HomePage" component={HomePage} />
             </Grid.Column>
         </Grid.Row>
       </Grid>

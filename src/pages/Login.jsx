@@ -13,7 +13,7 @@ export default function Login() {
       let userService = new UserService();
         userService.getByUserNameAndPassword(userName, password).then((result) => {
           if(result.data.success){
-            history.push("/HomePage");
+            history.push("/HomePage/EvaluationModelList");
           }else{
             alert(result.data.message);
           }
@@ -29,7 +29,7 @@ export default function Login() {
         }
         userService.addUser(data).then((result) => {
           if(result.data.success){
-            history.push("/HomePage");
+            history.push("/HomePage/EvaluationModelList");
           }else{
             alert(result.data.message);
           }
