@@ -10,47 +10,65 @@ export default function EvaluationModelAdd() {
         { key: 'o', text: 'Doktora', value: 'Doktora' },
       ]
 
+    const evaluationModelInitital = {
+        decs: "",
+        evaluationModelName: "",
+        parameterModelId: 0,
+        userId: 0,
+        topicModelDaos: [
+        ]
+    };
+
+    const topicModel = {
+        evaluationModelId: 0,
+        topicName: "cvasvca",
+        weight: 0,
+        questionModelDtos: []
+    };
+
+    const questionModel = {
+            question: "",
+            topicId: 0,
+            weight: 0
+    };
+
     const initialList = [];
 
-    const [topicModels, setTopicModels] = useState(initialList)
-    const [questionModels, setQuestionModels] = useState([])
+    const [evaluationModels, setEvaluationModels] = useState(evaluationModelInitital)
+    const [refresh, setRefresh] = useState(0)
 
-      function handleTopicAdd() {
-        let length = topicModels.length;
-        let newList = topicModels.concat(
-            {
-                id: length,
-                name: 'Robin',
-            }
-        );
-
-        setTopicModels(newList);
+      function handleTopicAdd(event) {
+        evaluationModels.topicModelDaos = evaluationModels.topicModelDaos.concat(
+            topicModel
+        )
+        setEvaluationModels(evaluationModels);
+        setRefresh(refresh + 1)
       }
 
-      function handleTopicRemove() {
-        let length = topicModels.length - 1;
-        let newList = topicModels.filter((item) => item.id !== length);
-    
-        setTopicModels(newList);
+      function handleTopicRemove(event) {
+        if(evaluationModels.topicModelDaos.length >= 1){
+            evaluationModels.topicModelDaos.pop();
+            setEvaluationModels(evaluationModels);
+        }
+        setRefresh(refresh + 1)
       }
 
-      function handleQuestionAdd() {
-        let length = questionModels.length;
-        let newList = questionModels.concat(
-            {
-                id: length,
-                name: 'Robin',
-            }
-        );
-
-        setQuestionModels(newList);
+      const handleQuestionAdd = function(event, item) {
+        evaluationModels.topicModelDaos[item].questionModelDtos = evaluationModels.topicModelDaos[item].questionModelDtos.concat(
+            questionModel
+        )
+        setEvaluationModels(evaluationModels)
+        setRefresh(refresh + 1)
+        event.preventDefault();
       }
 
-      function handleQuestionRemove() {
-        let length = questionModels.length - 1;
-        let newList = questionModels.filter((item) => item.id !== length);
-    
-        setQuestionModels(newList);
+      function handleQuestionRemove(event, item) {
+        if(evaluationModels.topicModelDaos[item].questionModelDtos.length >= 1){
+            evaluationModels.topicModelDaos[item].questionModelDtos.pop();
+            setEvaluationModels(evaluationModels);
+        }
+        setRefresh(refresh + 1)
+        event.preventDefault();
       }
 
   return (
@@ -85,19 +103,22 @@ export default function EvaluationModelAdd() {
         <Button.Group>
           <Button
             icon='minus'
-            onClick={handleTopicRemove}
+            onClick={event => handleTopicRemove(event)}
           />
           <Button
             icon='plus'
-            onClick={handleTopicAdd}
+            onClick={event => handleTopicAdd(event)}
           />
         </Button.Group>
 
         <div>
             {
-                topicModels.map((topic) => (
+                refresh.label
+            }
+            {
+                evaluationModels.topicModelDaos.map((topic, item) => (
                     <Form className='topicList'>
-                        <h2>Topic {topic.id + 1}</h2>
+                        <h2>Topic {item + 1}</h2>
                         <FormGroup>
                         <Form.Field
                             style={{width: "120px"}}
@@ -117,11 +138,11 @@ export default function EvaluationModelAdd() {
                             <Button.Group>
                                 <Button
                                     icon='minus'
-                                    onClick={handleQuestionRemove}
+                                    onClick={event => handleQuestionRemove(event, item)}
                                 />
                                 <Button
                                     icon='plus'
-                                    onClick={handleQuestionAdd}
+                                    onClick={event => handleQuestionAdd(event, item)}
                                 />
                             </Button.Group>
                             </div>
@@ -129,9 +150,9 @@ export default function EvaluationModelAdd() {
 
                         <div>
                             {
-                                questionModels.map((question) => (
+                                evaluationModels.topicModelDaos[item].questionModelDtos.map((question, item) => (
                                     <Form className='questionList'>
-                                        <h2>Topic {question.id + 1}</h2>
+                                        <h2>Question  {item + 1}</h2>
                                         <FormGroup>
                                         <Form.Field
                                             style={{width: "120px"}}
