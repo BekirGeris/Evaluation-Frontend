@@ -101,14 +101,12 @@ export default function EvaluationModelAdd() {
         </FormGroup>
 
         <Button.Group>
-          <Button
-            icon='minus'
-            onClick={event => handleTopicRemove(event)}
-          />
-          <Button
-            icon='plus'
-            onClick={event => handleTopicAdd(event)}
-          />
+        <Button icon='minus' onClick={event => handleTopicRemove(event)}>
+            Remove Topic
+        </Button>
+        <Button style={{marginLeft:"5px"}} icon='minus' onClick={event => handleTopicAdd(event)}>
+            Add Topic
+        </Button>
         </Button.Group>
 
         <div>
@@ -128,22 +126,20 @@ export default function EvaluationModelAdd() {
                             placeholder='Topic Weight'
                             />
                             <Form.Field
-                            style={{width: "670px"}}
+                            style={{width: "450px"}}
                             id='form-input-control-first-name'
                             control={Input}
                             label='Topic Name'
                             placeholder='Topic name'
                             />
-                            <div style={{backgroundColor:"#80af9d", marginTop:"3%"}}>
+                            <div style={{marginTop:"26px", alignItems:"center"}}>
                             <Button.Group>
-                                <Button
-                                    icon='minus'
-                                    onClick={event => handleQuestionRemove(event, item)}
-                                />
-                                <Button
-                                    icon='plus'
-                                    onClick={event => handleQuestionAdd(event, item)}
-                                />
+                                <Button style={{marginLeft:"15px"}} icon='minus' onClick={event => handleQuestionRemove(event, item)}>
+                                    Remove Question
+                                </Button>
+                                <Button style={{marginLeft:"5px", marginRight:"20px"}} icon='minus'  onClick={event => handleQuestionAdd(event, item)}>
+                                    Add Question
+                                </Button>
                             </Button.Group>
                             </div>
                         </FormGroup>
@@ -162,7 +158,7 @@ export default function EvaluationModelAdd() {
                                             placeholder='Question Weight'
                                             />
                                             <Form.Field
-                                            style={{width: "670px"}}
+                                            style={{width: "770px"}}
                                             id='form-input-control-first-name'
                                             control={Input}
                                             label='Question Name'
