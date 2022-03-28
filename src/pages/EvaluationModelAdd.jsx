@@ -1,13 +1,14 @@
 import { Field, Formik, yupToFormErrors } from 'formik'
 import React, { useState } from 'react'
 import { Button, Form, FormField, FormGroup, Icon, Image, Input, List, Select, TextArea, Transition } from 'semantic-ui-react'
+import EvaluationModelsService from "../services/EvaluationModelsService";
 
 export default function EvaluationModelAdd() {
 
     const genderOptions = [
-        { key: 'm', text: 'Lisans', value: 'Lisans' },
-        { key: 'f', text: 'Yüksek Lisans', value: 'Yüksek Lisans' },
-        { key: 'o', text: 'Doktora', value: 'Doktora' },
+        { key: '0', text: 'Lisans', value: 'Lisans' },
+        { key: '1', text: 'Yüksek Lisans', value: 'Yüksek Lisans' },
+        { key: '2', text: 'Doktora', value: 'Doktora' },
       ]
 
     const evaluationModelInitital = {
@@ -21,7 +22,7 @@ export default function EvaluationModelAdd() {
 
     const topicModel = {
         evaluationModelId: 0,
-        topicName: "cvasvca",
+        topicName: "",
         weight: 0,
         questionModelDtos: []
     };
@@ -36,6 +37,25 @@ export default function EvaluationModelAdd() {
 
     const [evaluationModels, setEvaluationModels] = useState(evaluationModelInitital)
     const [refresh, setRefresh] = useState(0)
+
+       function setEvaluationName(event) {
+        evaluationModels.evaluationModelName = event.target.value
+        setEvaluationModels(evaluationModels);
+        setRefresh(refresh + 1)
+      }
+
+      function setParameterId(event) {
+          alert(event.target.value);
+        evaluationModels.parameterModelId = event.target.value
+        setEvaluationModels(evaluationModels);
+        setRefresh(refresh + 1)
+      }
+
+      function setDecs(event) {
+        evaluationModels.decs = event.target.value
+        setEvaluationModels(evaluationModels);
+        setRefresh(refresh + 1)
+      }
 
       function handleTopicAdd(event) {
         evaluationModels.topicModelDaos = evaluationModels.topicModelDaos.concat(
@@ -71,32 +91,41 @@ export default function EvaluationModelAdd() {
         event.preventDefault();
       }
 
+      function saveeEvaluationModelDto(event) {
+        const evaluationModelsService = new EvaluationModelsService();
+        evaluationModelsService.addEvaluationModel(evaluationModels);
+        event.preventDefault();
+      }
+
   return (
     <div>
     <h1>New Evaluation Model</h1>
     <Form className="ui form">
             <FormGroup widths="equal">
-            <Form.Field
+            <Form.Input
+            text={event => setEvaluationName(event)}
             id='form-input-control-first-name'
             control={Input}
             label='Evaluation Model Name'
             placeholder='Evaluation model name'
+            onChange={setEvaluationName}
             />
-            <Form.Field
-                    name=""
-                    control={Select}
+            <Form.Select
+                    id= 'form-select-control-gender'
                     options={genderOptions}
                     label={{ children: 'Parameter Model', htmlFor: 'form-select-control-gender' }}
                     placeholder='Parameter Model'
                     search
                     searchInput={{ id: 'form-select-control-gender' }}
+                    onChange={setParameterId}
                 />
-                <Form.Field
+                <Form.TextArea
                 style={{width: "670px"}}
                 id='form-textarea-control-opinion'
                 control={TextArea}
-                label='Opinion'
-                placeholder='Opinion'
+                label='Description'
+                placeholder='Description'
+                onChange={setDecs}
                 />
         </FormGroup>
 
@@ -118,12 +147,15 @@ export default function EvaluationModelAdd() {
                     <Form className='topicList'>
                         <h2>Topic {item + 1}</h2>
                         <FormGroup>
-                        <Form.Field
+                        <Form.Input
                             style={{width: "120px"}}
                             id='form-input-control-first-name'
                             control={Input}
+                            type="number"
+                            min={0}
+                            max={100}
                             label='Topic Weight'
-                            placeholder='Topic Weight'
+                            placeholder='Weight'
                             />
                             <Form.Field
                             style={{width: "450px"}}
@@ -154,8 +186,11 @@ export default function EvaluationModelAdd() {
                                             style={{width: "120px"}}
                                             id='form-input-control-first-name'
                                             control={Input}
+                                            type="number"
+                                            min={0}
+                                            max={100}
                                             label='Question Weight'
-                                            placeholder='Question Weight'
+                                            placeholder='Weight'
                                             />
                                             <Form.Field
                                             style={{width: "770px"}}
@@ -176,7 +211,7 @@ export default function EvaluationModelAdd() {
         </div>
 
         <div className='ui two buttons'>
-                <Button type="submit" onClick={() => {  }} basic color='green'>
+                <Button type="submit" onClick={(event) => {  }} basic color='green'>
                     Save
                 </Button>
         </div>

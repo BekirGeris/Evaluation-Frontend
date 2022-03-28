@@ -24,19 +24,11 @@ export default class EvaluationModelsService{
         return axios.get(BASE_URL + "getTopicModelsByEvaluationModelId?evaluationModelId=" + evaluationModelId)
     }
 
-    addQuestionModel(questionModel){
-        return axios.post(BASE_URL +  "addQuestionModel", questionModel)
-    }
-
-    addTopicModel(topicModel){
-        return axios.post(BASE_URL +  "addTopicModel", topicModel)
-    }
-
     addParameterModel(parameterModel){
         return axios.post(BASE_URL +  "addParameterModel", parameterModel)
     }
 
-    addEvaluationModel(evaluationModel){
-        return axios.post(BASE_URL +  "addEvaluationModel", evaluationModel)
+    addEvaluationModel(evaluationModelDto){
+        return axios.post(BASE_URL +  "addEvaluationModel", evaluationModelDto)
     }
 }
