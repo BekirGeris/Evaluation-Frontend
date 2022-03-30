@@ -1,9 +1,12 @@
 import { Field, Formik, yupToFormErrors } from 'formik'
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom';
 import { Button, Form, FormField, FormGroup, Icon, Image, Input, List, Select, TextArea, Transition } from 'semantic-ui-react'
 import EvaluationModelsService from "../services/EvaluationModelsService";
 
 export default function EvaluationModelAdd() {
+
+    const history = useHistory()
 
     const genderOptions = [
         { key: '0', text: 'Lisans', value: 'Lisans' },
@@ -14,14 +17,13 @@ export default function EvaluationModelAdd() {
     const evaluationModelInitital = {
         decs: "",
         evaluationModelName: "",
-        parameterModelId: 0,
+        parameterModelId: -1,
         userId: 0,
         topicModelDaos: [
         ]
     };
 
     const topicModel = {
-        evaluationModelId: 0,
         topicName: "",
         weight: 0,
         questionModelDtos: []
@@ -29,7 +31,6 @@ export default function EvaluationModelAdd() {
 
     const questionModel = {
             question: "",
-            topicId: 0,
             weight: 0
     };
 
@@ -45,8 +46,11 @@ export default function EvaluationModelAdd() {
       }
 
       function setParameterId(event) {
-          alert(event.target.value);
-        evaluationModels.parameterModelId = event.target.value
+        genderOptions.forEach((gender) => {
+            if(gender.text === event.target.innerText){
+                evaluationModels.parameterModelId = gender.key
+            }
+        })
         setEvaluationModels(evaluationModels);
         setRefresh(refresh + 1)
       }
@@ -91,10 +95,85 @@ export default function EvaluationModelAdd() {
         event.preventDefault();
       }
 
-      function saveeEvaluationModelDto(event) {
-        const evaluationModelsService = new EvaluationModelsService();
-        evaluationModelsService.addEvaluationModel(evaluationModels);
+      function setTopicName(event, item) {
+        evaluationModels.topicModelDaos[item].topicName = event.target.value;
+        setEvaluationModels(evaluationModels);
+        setRefresh(refresh + 1)
         event.preventDefault();
+      }
+
+      function setTopicWeight(event, item) {
+        evaluationModels.topicModelDaos[item].weight = event.target.value;
+        setEvaluationModels(evaluationModels);
+        setRefresh(refresh + 1)
+        event.preventDefault();
+      }
+
+      function setQuestion(event, item, qItem) {
+        evaluationModels.topicModelDaos[item].questionModelDtos[qItem].question = event.target.value;
+        setEvaluationModels(evaluationModels);
+        setRefresh(refresh + 1)
+        event.preventDefault();
+      }
+
+      function setQuestionWeight(event, item, qItem) {
+        evaluationModels.topicModelDaos[item].questionModelDtos[qItem].weight = event.target.value;
+        setEvaluationModels(evaluationModels);
+        setRefresh(refresh + 1)
+        event.preventDefault();
+      }
+
+
+
+      function textEmptyControl(){
+          let flag = true;
+          if(evaluationModels.evaluationModelName === "" || evaluationModels.parameterModelId === -1 || evaluationModels.decs === ""){
+              alert("Tüm Bilgileri Giriniz.")
+              flag = false;
+              return;
+          }
+
+          if(evaluationModels.topicModelDaos.length === 0){
+            alert("En Az bir konu eklemeniz gerekmektedir.")
+            flag = false;
+            return;
+          }
+
+          evaluationModels.topicModelDaos.forEach((topic) => {
+              if(topic.weight === 0 || topic.topicName === "") {
+                alert("Lütfen konu bilgilerini giriniz.")
+                flag = false;
+                return;
+              }
+            if(topic.questionModelDtos.length === 0){
+                alert("Her konunun altında en az bir soru bulunmalıdır.")
+                flag = false;
+                return;
+            }
+
+            topic.questionModelDtos.forEach((question) => {
+                if(question.weight === 0 || question.question === ""){
+                    alert("Lütfen soru bilgilerini giriniz.")
+                    flag = false;
+                    return;
+                }
+            })
+          })
+
+          if(flag){
+             saveeEvaluationModelDto();
+          }
+
+          function saveeEvaluationModelDto() {
+            const evaluationModelsService = new EvaluationModelsService();
+            evaluationModelsService.addEvaluationModel(evaluationModels).then((result) => {
+                if(result.data.success){
+                    history.push("/HomePage/EvaluationModelList");
+                  }else{
+                    alert(result.data.message);
+                  }
+              });
+          }
       }
 
   return (
@@ -156,6 +235,7 @@ export default function EvaluationModelAdd() {
                             max={100}
                             label='Topic Weight'
                             placeholder='Weight'
+                            onChange={event => {setTopicWeight(event, item)}}
                             />
                             <Form.Field
                             style={{width: "450px"}}
@@ -163,6 +243,7 @@ export default function EvaluationModelAdd() {
                             control={Input}
                             label='Topic Name'
                             placeholder='Topic name'
+                            onChange={event => {setTopicName(event, item)}}
                             />
                             <div style={{marginTop:"26px", alignItems:"center"}}>
                             <Button.Group>
@@ -178,9 +259,9 @@ export default function EvaluationModelAdd() {
 
                         <div>
                             {
-                                evaluationModels.topicModelDaos[item].questionModelDtos.map((question, item) => (
+                                evaluationModels.topicModelDaos[item].questionModelDtos.map((question, qItem) => (
                                     <Form className='questionList'>
-                                        <h2>Question  {item + 1}</h2>
+                                        <h2>Question  {qItem + 1}</h2>
                                         <FormGroup>
                                         <Form.Field
                                             style={{width: "120px"}}
@@ -191,13 +272,15 @@ export default function EvaluationModelAdd() {
                                             max={100}
                                             label='Question Weight'
                                             placeholder='Weight'
+                                            onChange={event => {setQuestionWeight(event, item, qItem)}}
                                             />
                                             <Form.Field
                                             style={{width: "770px"}}
                                             id='form-input-control-first-name'
                                             control={Input}
-                                            label='Question Name'
-                                            placeholder='Question name'
+                                            label='Question'
+                                            placeholder='Question'
+                                            onChange={event => {setQuestion(event, item, qItem)}}
                                             />
                                         </FormGroup>
                                     </Form>
@@ -211,7 +294,7 @@ export default function EvaluationModelAdd() {
         </div>
 
         <div className='ui two buttons'>
-                <Button type="submit" onClick={(event) => {  }} basic color='green'>
+                <Button type="submit" onClick={textEmptyControl} basic color='green'>
                     Save
                 </Button>
         </div>
