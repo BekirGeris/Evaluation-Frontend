@@ -1,5 +1,5 @@
 import { Field, Formik, yupToFormErrors } from 'formik'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import { Button, Form, FormField, FormGroup, Icon, Image, Input, List, Select, TextArea, Transition } from 'semantic-ui-react'
 import EvaluationModelsService from "../services/EvaluationModelsService";
@@ -9,10 +9,37 @@ export default function EvaluationModelAdd() {
     const history = useHistory()
 
     const genderOptions = [
-        { key: '0', text: 'Lisans', value: 'Lisans' },
-        { key: '1', text: 'Yüksek Lisans', value: 'Yüksek Lisans' },
-        { key: '2', text: 'Doktora', value: 'Doktora' },
-      ]
+      { key: 'm', text: 'Male', value: 'male' },
+      { key: 'f', text: 'Female', value: 'female' },
+      { key: 'o', text: 'Other', value: 'other' },
+    ]
+
+    const initSelectModel = {
+      key: '',
+      text: '', 
+      value: ''
+    }
+
+    const initCarameterModels = {
+      data: []
+    }
+
+    const [parameterModels, setParameterModels] = useState(initCarameterModels)
+
+    let  evaluationModelsService = new EvaluationModelsService();
+
+    useEffect(() => {
+      evaluationModelsService.getAllParameterModel().then(result => {
+            result.data.data.forEach((parameterModel) => {
+              let selectModel = initSelectModel;
+              selectModel.key = parameterModel.parameterModelId;
+              selectModel.text = parameterModel.parameterModelName;
+              selectModel.value = parameterModel.parameterModelName;
+              parameterModels.data = parameterModels.data.concat(selectModel)
+            })
+            setRefresh(refresh + 1)
+        });
+  }, [])
 
     const evaluationModelInitital = {
         decs: "",
@@ -34,8 +61,6 @@ export default function EvaluationModelAdd() {
             weight: 0
     };
 
-    const initialList = [];
-
     const [evaluationModels, setEvaluationModels] = useState(evaluationModelInitital)
     const [refresh, setRefresh] = useState(0)
 
@@ -46,9 +71,9 @@ export default function EvaluationModelAdd() {
       }
 
       function setParameterId(event) {
-        genderOptions.forEach((gender) => {
-            if(gender.text === event.target.innerText){
-                evaluationModels.parameterModelId = gender.key
+        parameterModels.data.forEach((parameterModel) => {
+            if(parameterModel.text === event.target.innerText){
+                evaluationModels.parameterModelId = parameterModel.key
             }
         })
         setEvaluationModels(evaluationModels);
@@ -165,7 +190,6 @@ export default function EvaluationModelAdd() {
           }
 
           function saveeEvaluationModelDto() {
-            const evaluationModelsService = new EvaluationModelsService();
             evaluationModelsService.addEvaluationModel(evaluationModels).then((result) => {
                 if(result.data.success){
                     history.push("/HomePage/EvaluationModelList");
@@ -191,7 +215,7 @@ export default function EvaluationModelAdd() {
             />
             <Form.Select
                     id= 'form-select-control-gender'
-                    options={genderOptions}
+                    options={parameterModels.data}
                     label={{ children: 'Parameter Model', htmlFor: 'form-select-control-gender' }}
                     placeholder='Parameter Model'
                     search
