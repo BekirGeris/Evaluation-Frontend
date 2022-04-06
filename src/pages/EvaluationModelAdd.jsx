@@ -1,4 +1,3 @@
-import { Field, Formik, yupToFormErrors } from 'formik'
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import { Button, Form, FormField, FormGroup, Icon, Image, Input, List, Select, TextArea, Transition } from 'semantic-ui-react'
@@ -8,35 +7,26 @@ export default function EvaluationModelAdd() {
 
     const history = useHistory()
 
-    const genderOptions = [
-      { key: 'm', text: 'Male', value: 'male' },
-      { key: 'f', text: 'Female', value: 'female' },
-      { key: 'o', text: 'Other', value: 'other' },
-    ]
-
-    const initSelectModel = {
-      key: '',
-      text: '', 
-      value: ''
-    }
-
-    const initCarameterModels = {
+    const initParameterModels = {
       data: []
     }
 
-    const [parameterModels, setParameterModels] = useState(initCarameterModels)
+    const [parameterModels, setParameterModels] = useState(initParameterModels)
 
     let  evaluationModelsService = new EvaluationModelsService();
 
     useEffect(() => {
       evaluationModelsService.getAllParameterModel().then(result => {
             result.data.data.forEach((parameterModel) => {
-              let selectModel = initSelectModel;
-              selectModel.key = parameterModel.parameterModelId;
-              selectModel.text = parameterModel.parameterModelName;
-              selectModel.value = parameterModel.parameterModelName;
-              parameterModels.data = parameterModels.data.concat(selectModel)
+              parameterModels.data = parameterModels.data.concat(
+                {
+                    key: parameterModel.parameterModelId,
+                    text: parameterModel.parameterModelName, 
+                    value: parameterModel.parameterModelName
+                }
+              )
             })
+            setParameterModels(parameterModels)
             setRefresh(refresh + 1)
         });
   }, [])
@@ -46,8 +36,7 @@ export default function EvaluationModelAdd() {
         evaluationModelName: "",
         parameterModelId: -1,
         userId: 0,
-        topicModelDaos: [
-        ]
+        topicModelDaos: []
     };
 
     const topicModel = {
