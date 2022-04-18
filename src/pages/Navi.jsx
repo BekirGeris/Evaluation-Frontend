@@ -4,8 +4,11 @@ import Search from './Search'
 import SignedOut from './SignedOut'
 import SignedIn from './SignedIn'
 import { useHistory } from 'react-router-dom'
+import { useCookies } from 'react-cookie';
 
 export default function Navi() {
+
+    const [cookies, setCookie] = useCookies(['user']);
 
     const [isAuthenticaten, setIsAuthenticaten] = useState(true)
 
@@ -13,6 +16,9 @@ export default function Navi() {
 
     function handleSignOut() {
         setIsAuthenticaten(false)
+        setCookie('UserName', "", { path: '/' });
+        setCookie('Password', "", { path: '/' });
+        setCookie('UserId', "", { path: '/' });
         history.push("/")
     }
 
@@ -20,10 +26,14 @@ export default function Navi() {
         setIsAuthenticaten(true)
     }
 
+    function homeClick() {
+        history.push("/HomePage/EvaluationModelList")
+    }
+
     return (
         <div>
             <Menu inverted size='mini' fixed="top">
-                <Menu.Item name='home' />
+                <Menu.Item onClick={homeClick} name='home' />
                 <Menu.Item name='messages' />
 
                 <Menu.Item>

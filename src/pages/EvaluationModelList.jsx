@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import { Button, Card, CardGroup, Header, Icon, Image, Menu, Table } from 'semantic-ui-react';
 import EvaluationModelsService from '../services/EvaluationModelsService';
+import Cookies from 'js-cookie';
 
 export default function EvaluationModelList() {
 
@@ -10,11 +11,12 @@ export default function EvaluationModelList() {
 
     useEffect(()=>{
         let evaluationModelsService  = new EvaluationModelsService();
-        evaluationModelsService.getEvaluationModelsByUserId(0).then(result => {
+        evaluationModelsService.getEvaluationModelsByUserId(Cookies.get("UserId")).then(result => {
           setEvaluationModels(result.data.data);
         });
     });
 
+  
   return (
   <div>
   <Card.Group>

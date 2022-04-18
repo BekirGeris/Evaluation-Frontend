@@ -1,24 +1,39 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import UserService from "../services/UserService";
 import { useHistory } from "react-router-dom";
+import { useCookies } from 'react-cookie';
+import Cookies from 'js-cookie';
 
 export default function Login() {
 
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
+  const [cookies, setCookie] = useCookies(['user']);
 
   const history = useHistory()
+
+  useEffect(()=>{
+    let userService = new UserService();
+        userService.getByUserNameAndPassword(Cookies.get("UserName"), Cookies.get("Password")).then((result) => {
+          if(result.data.success){
+            setCookies(result.data.data.userName, result.data.data.password, result.data.data.userId);
+            history.push("/HomePage/EvaluationModelList");
+          }
+        });
+  });
 
     const onLogin = function(event) {
       let userService = new UserService();
         userService.getByUserNameAndPassword(userName, password).then((result) => {
           if(result.data.success){
+            setCookies(result.data.data.userName, result.data.data.password, result.data.data.userId);
             history.push("/HomePage/EvaluationModelList");
           }else{
             alert(result.data.message);
           }
         });
-        event.preventDefault();
+        if(event !== undefined)
+          event.preventDefault();
     };
 
     const onRegister = function(event) {
@@ -29,13 +44,19 @@ export default function Login() {
         }
         userService.addUser(data).then((result) => {
           if(result.data.success){
-            history.push("/HomePage/EvaluationModelList");
+            onLogin();
           }else{
             alert(result.data.message);
           }
         });
         event.preventDefault();
     };
+
+    const setCookies = function(name, pass, id) {
+            setCookie('UserName', name, { path: '/' });
+            setCookie('Password', pass, { path: '/' });
+            setCookie('UserId', id, { path: '/' });
+    }
 
   return (
     <div class="container" id="container">
