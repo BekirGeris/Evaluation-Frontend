@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import { Button, Card, CardGroup, Header, Icon, Image, Menu, Table } from 'semantic-ui-react';
 import EvaluationModelsService from '../services/EvaluationModelsService';
+import { useCookies } from 'react-cookie';
 import Cookies from 'js-cookie';
 
 export default function EvaluationModelList() {
 
     const history = useHistory()
     const [evaluationModels, setEvaluationModels] = useState([])
+    const [cookies, setCookie] = useCookies(['user']);
 
     useEffect(()=>{
         let evaluationModelsService  = new EvaluationModelsService();
@@ -15,6 +17,16 @@ export default function EvaluationModelList() {
           setEvaluationModels(result.data.data);
         });
     });
+
+    function goEvaluate(evaluationModelId) {
+      setCookie('evaluationModelId', evaluationModelId, { path: '/' });
+      history.push("/HomePage/EvaluatedAdd")
+    }
+
+    function goEvaluated() {
+
+      history.push("/HomePage/EvaluatedList")
+    }
 
   
   return (
@@ -36,15 +48,18 @@ export default function EvaluationModelList() {
                                   </Header>
                                 </Card.Header>
                               <Card.Description>
-                                Steve wants to add you to the group <strong>best friends</strong>
+                                <p>
+                                {evaluationModel.decs}
+                                </p>
+                                <p></p>
                               </Card.Description>
                             </Card.Content>
                             <Card.Content extra>
                               <div className='ui two buttons'>
-                                <Button type="submit" onClick={() => { history.push("/HomePage/EvaluatedAdd") }} basic color='green'>
+                                <Button type="submit" onClick={() => { goEvaluate(evaluationModel.evaluationModelId) }} basic color='green'>
                                   Evaluate
                                 </Button>
-                                <Button type="submit" onClick={() => { history.push("/HomePage/EvaluatedList") }} basic color='blue'>
+                                <Button type="submit" onClick={() => { goEvaluated() }} basic color='blue'>
                                   Evaluated
                                 </Button>
                               </div>
@@ -55,8 +70,6 @@ export default function EvaluationModelList() {
           }
             <Card>
               <Card.Content textAlign='center'>
-                  <p> </p>
-                  <p> </p>
                   <Image
                       size='small'
                       src="https://cdn.pixabay.com/photo/2017/03/19/03/51/material-icon-2155448_1280.png"

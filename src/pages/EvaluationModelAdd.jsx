@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
 import { Button, Form, FormField, FormGroup, Icon, Image, Input, List, Select, TextArea, Transition } from 'semantic-ui-react'
 import EvaluationModelsService from "../services/EvaluationModelsService";
+import { useCookies } from 'react-cookie';
+import Cookies from 'js-cookie';
 
 export default function EvaluationModelAdd() {
 
     const history = useHistory()
+    const [cookies, setCookie] = useCookies(['user']);
 
     const initParameterModels = {
       data: []
@@ -36,7 +39,7 @@ export default function EvaluationModelAdd() {
         evaluationModelName: "",
         parameterModelId: -1,
         userId: 0,
-        topicModelDaos: []
+        topicModelDtos: []
     };
 
     const topicModel = {
@@ -76,7 +79,7 @@ export default function EvaluationModelAdd() {
       }
 
       function handleTopicAdd(event) {
-        evaluationModels.topicModelDaos = evaluationModels.topicModelDaos.concat(
+        evaluationModels.topicModelDtos = evaluationModels.topicModelDtos.concat(
             topicModel
         )
         setEvaluationModels(evaluationModels);
@@ -84,15 +87,15 @@ export default function EvaluationModelAdd() {
       }
 
       function handleTopicRemove(event) {
-        if(evaluationModels.topicModelDaos.length >= 1){
-            evaluationModels.topicModelDaos.pop();
+        if(evaluationModels.topicModelDtos.length >= 1){
+            evaluationModels.topicModelDtos.pop();
             setEvaluationModels(evaluationModels);
         }
         setRefresh(refresh + 1)
       }
 
       const handleQuestionAdd = function(event, item) {
-        evaluationModels.topicModelDaos[item].questionModelDtos = evaluationModels.topicModelDaos[item].questionModelDtos.concat(
+        evaluationModels.topicModelDtos[item].questionModelDtos = evaluationModels.topicModelDtos[item].questionModelDtos.concat(
             questionModel
         )
         setEvaluationModels(evaluationModels)
@@ -101,8 +104,8 @@ export default function EvaluationModelAdd() {
       }
 
       function handleQuestionRemove(event, item) {
-        if(evaluationModels.topicModelDaos[item].questionModelDtos.length >= 1){
-            evaluationModels.topicModelDaos[item].questionModelDtos.pop();
+        if(evaluationModels.topicModelDtos[item].questionModelDtos.length >= 1){
+            evaluationModels.topicModelDtos[item].questionModelDtos.pop();
             setEvaluationModels(evaluationModels);
         }
         setRefresh(refresh + 1)
@@ -110,28 +113,28 @@ export default function EvaluationModelAdd() {
       }
 
       function setTopicName(event, item) {
-        evaluationModels.topicModelDaos[item].topicName = event.target.value;
+        evaluationModels.topicModelDtos[item].topicName = event.target.value;
         setEvaluationModels(evaluationModels);
         setRefresh(refresh + 1)
         event.preventDefault();
       }
 
       function setTopicWeight(event, item) {
-        evaluationModels.topicModelDaos[item].weight = event.target.value;
+        evaluationModels.topicModelDtos[item].weight = event.target.value;
         setEvaluationModels(evaluationModels);
         setRefresh(refresh + 1)
         event.preventDefault();
       }
 
       function setQuestion(event, item, qItem) {
-        evaluationModels.topicModelDaos[item].questionModelDtos[qItem].question = event.target.value;
+        evaluationModels.topicModelDtos[item].questionModelDtos[qItem].question = event.target.value;
         setEvaluationModels(evaluationModels);
         setRefresh(refresh + 1)
         event.preventDefault();
       }
 
       function setQuestionWeight(event, item, qItem) {
-        evaluationModels.topicModelDaos[item].questionModelDtos[qItem].weight = event.target.value;
+        evaluationModels.topicModelDtos[item].questionModelDtos[qItem].weight = event.target.value;
         setEvaluationModels(evaluationModels);
         setRefresh(refresh + 1)
         event.preventDefault();
@@ -147,13 +150,13 @@ export default function EvaluationModelAdd() {
               return;
           }
 
-          if(evaluationModels.topicModelDaos.length === 0){
+          if(evaluationModels.topicModelDtos.length === 0){
             alert("En Az bir konu eklemeniz gerekmektedir.")
             flag = false;
             return;
           }
 
-          evaluationModels.topicModelDaos.forEach((topic) => {
+          evaluationModels.topicModelDtos.forEach((topic) => {
               if(topic.weight === 0 || topic.topicName === "") {
                 alert("Lütfen konu bilgilerini giriniz.")
                 flag = false;
@@ -179,6 +182,7 @@ export default function EvaluationModelAdd() {
           }
 
           function saveeEvaluationModelDto() {
+            evaluationModels.userId = Cookies.get("UserId");
             evaluationModelsService.addEvaluationModel(evaluationModels).then((result) => {
                 if(result.data.success){
                     history.push("/HomePage/EvaluationModelList");
@@ -235,7 +239,7 @@ export default function EvaluationModelAdd() {
                 refresh.label
             }
             {
-                evaluationModels.topicModelDaos.map((topic, item) => (
+                evaluationModels.topicModelDtos.map((topic, item) => (
                     <Form className='topicList'>
                         <h2>Topic {item + 1}</h2>
                         <FormGroup>
@@ -272,7 +276,7 @@ export default function EvaluationModelAdd() {
 
                         <div>
                             {
-                                evaluationModels.topicModelDaos[item].questionModelDtos.map((question, qItem) => (
+                                evaluationModels.topicModelDtos[item].questionModelDtos.map((question, qItem) => (
                                     <Form className='questionList'>
                                         <h2>Question  {qItem + 1}</h2>
                                         <FormGroup>

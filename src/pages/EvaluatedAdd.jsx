@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Form, FormGroup, FormTextArea, Header, TextArea } from 'semantic-ui-react';
 import EvaluationModelsService from "../services/EvaluationModelsService";
+import Cookies from 'js-cookie';
 
 export default function EvaluatedAdd() {
 
@@ -9,7 +10,7 @@ export default function EvaluatedAdd() {
 
   useEffect(() => {
     let  evaluationModelsService = new EvaluationModelsService();
-      evaluationModelsService.getEvaluationModelByEvaluationModelId(9).then((result) => {
+      evaluationModelsService.getEvaluationModelByEvaluationModelId(Cookies.get("evaluationModelId")).then((result) => {
         if(result.data.success) {
             setEvaluationModel(result.data)
         }
