@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Form, FormGroup, FormTextArea, Grid, GridColumn, Header, Message, TextArea } from 'semantic-ui-react';
+import { Button, Form, FormGroup, FormTextArea, Grid, GridColumn, Header, Icon, Message, TextArea } from 'semantic-ui-react';
 import EvaluationModelsService from "../services/EvaluationModelsService";
 import Cookies from 'js-cookie';
 
@@ -63,12 +63,19 @@ export default function EvaluatedAdd() {
             </Grid.Row>
           </Grid>
 
+                 <div className='evaName'>
+                 <Form.Input
+                  label='Evaluated Name'
+                  placeholder='Evaluated name'
+                  />
+                 </div>
+
           <div>
               {
                   evaluationModel.data.topicModelDtos.map((topic, item) => (
                       <Form className='topicList'>
                         <h2>Topic {item + 1}</h2>
-                          <Grid style={{width: "950px", marginBottom:"1%"}}>
+                          <Grid style={{width: "950px", marginBottom:"1%", marginLeft:"1%"}}>
                             <Grid.Row>
                               <Grid.Column width={2}>
                                   <Message>
@@ -78,13 +85,16 @@ export default function EvaluatedAdd() {
                                         </p>
                                   </Message>
                                 </Grid.Column>
-                                <Grid.Column width={14}>
+                                <Grid.Column width={12}>
                                   <Message>
                                       <Message.Header>Topic Name</Message.Header>
                                         <p>
                                           {topic.topicName}
                                         </p>
                                   </Message>
+                              </Grid.Column>
+                              <Grid.Column width={2}>
+                                  <Icon color='grey' style={{marginTop:"10%"}} name='share alternate square' size='huge' />
                               </Grid.Column>
                             </Grid.Row>
                           </Grid>

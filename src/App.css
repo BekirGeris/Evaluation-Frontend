@@ -8,6 +8,14 @@
 	margin: 1%;
 }
 
+.evaName {
+	width: 50vh;
+	text-align: left;
+	margin-left: 5%;
+	margin-bottom: 2%;
+	margin-top: 2%;
+}
+
 .questionList {
 	background: #80af9d;
 	text-align: left;
