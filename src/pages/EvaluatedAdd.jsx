@@ -1,16 +1,41 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Form, FormGroup, FormTextArea, Grid, GridColumn, Header, Icon, Message, TextArea } from 'semantic-ui-react';
+import { Button, Confirm, Form, FormGroup, FormTextArea, Grid, GridColumn, Header, Icon, Message, TextArea } from 'semantic-ui-react';
 import EvaluationModelsService from "../services/EvaluationModelsService";
 import Cookies from 'js-cookie';
+import EvaluatedService from '../services/EvaluatedService';
 
 export default function EvaluatedAdd() {
 
+  const evaluated = {
+    evaluatedFirstName: "",
+    evaluatedLastName: "",
+    evaluatedNumber: "",
+    evaluatedPoint: 0,
+    evaluationId: 0,
+    userId: 0,
+    topicDtos: []
+};
+
+const topic = {
+    topicName: "",
+    weight: 0,
+    questionModelDtos: []
+};
+
+const question = {
+  answer: 0,
+  question: "",
+  weight: 0
+};
 
   const [evaluationModel, setEvaluationModel] = useState()
   const [parameterModel, setParameterModel] = useState()
+  const [evaluation, setEevaluation] = useState(evaluated)
+  const [open, setOpenn] = useState({open: false})
 
   useEffect(() => {
     let  evaluationModelsService = new EvaluationModelsService();
+    
       evaluationModelsService.getEvaluationModelByEvaluationModelId(Cookies.get("evaluationModelId")).then((result) => {
         if(result.data.success) {
             setEvaluationModel(result.data)
@@ -21,10 +46,39 @@ export default function EvaluatedAdd() {
             })
         }
       })
+
   }, [])
+
+  function calculate() {
+    setOpenn({open: true})
+  }
+
+  function onCancel() {
+    setOpenn({open: false})
+  }
+
+  function onConfirm() {
+    setOpenn({open: false})
+    let evaluatedService = new EvaluatedService();
+
+    evaluatedService.addEvaluatedDto().then((result) => {
+      if(result.data.success) {
+        alert(result.data.success)
+      }
+    })
+  }
 
   return (
     <div>
+
+          <Confirm
+            header='Hesaplanıyor...'
+            open={open.open}
+            confirmButton="Save" 
+            onCancel={onCancel}
+            onConfirm={onConfirm}
+          />
+
       {evaluationModel === undefined || parameterModel === undefined ?
         <h1>Error 404 not found</h1>
         : 
@@ -147,7 +201,7 @@ export default function EvaluatedAdd() {
           </FormGroup>
           
           <div>
-            <Button type="submit" basic color='green'>
+            <Button type="submit" onClick={calculate} basic color='green'>
               Calculate
             </Button>
           </div>
