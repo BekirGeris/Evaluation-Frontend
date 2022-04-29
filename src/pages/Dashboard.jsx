@@ -7,6 +7,7 @@ import EvaluationAdd from './EvaluatedAdd';
 import EvaluatedList from './EvaluatedList';
 import EvaluationModelAdd from './EvaluationModelAdd';
 import EvaluationModelList from './EvaluationModelList';
+import ParamaterAdd from './ParamaterAdd';
 
 export default function Dashboard() {
 
@@ -20,6 +21,7 @@ export default function Dashboard() {
                 <Route path="/HomePage/EvaluationAdd" component={EvaluationAdd} />
                 <Route path="/HomePage/EvaluatedAdd" component={EvaluatedAdd} />
                 <Route path="/HomePage/EvaluatedList" component={EvaluatedList} />
+                <Route path="/HomePage/ParamaterAdd" component={ParamaterAdd} />
             </Grid.Column>
         </Grid.Row>
       </Grid>

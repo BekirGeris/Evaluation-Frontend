@@ -30,6 +30,10 @@ export default function Navi() {
         history.push("/HomePage/EvaluationModelList")
     }
 
+    function goAddParameterPanel() {
+        history.push("/HomePage/ParamaterAdd")
+    }
+
     return (
         <div>
             <Menu inverted size='mini' fixed="top">
@@ -48,7 +52,7 @@ export default function Navi() {
                         </Dropdown.Menu>
                     </Dropdown>
                     <Menu.Item>
-                        {isAuthenticaten ? <SignedIn signOut={handleSignOut} /> : <SignedOut signIn={handleSignIn} />}
+                        {isAuthenticaten ? <SignedIn signOut={handleSignOut} goParamaterPanel={goAddParameterPanel}/> : <SignedOut signIn={handleSignIn} />}
                     </Menu.Item>
                 </Menu.Menu>
             </Menu>

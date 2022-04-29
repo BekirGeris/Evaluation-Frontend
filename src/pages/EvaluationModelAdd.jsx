@@ -19,7 +19,7 @@ export default function EvaluationModelAdd() {
     let  evaluationModelsService = new EvaluationModelsService();
 
     useEffect(() => {
-      evaluationModelsService.getAllParameterModel().then(result => {
+      evaluationModelsService.getParameterModelByUserId(Cookies.get("UserId")).then(result => {
             result.data.data.forEach((parameterModel) => {
               parameterModels.data = parameterModels.data.concat(
                 {

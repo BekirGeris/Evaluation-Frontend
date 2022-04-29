@@ -16,6 +16,10 @@ export default class EvaluationModelsService{
         return axios.get(BASE_URL + "getAllParameterModel")
     }
 
+    getParameterModelByUserId(userId){
+        return axios.get(BASE_URL + "getByParameterModelsUserId?userId=" + userId)
+    }
+
     getQuestionModelsByTopicId(topicId){
         return axios.get(BASE_URL + "getQuestionModelsByTopicId?topicId=" + topicId)
     }
