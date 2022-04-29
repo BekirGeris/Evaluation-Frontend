@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Confirm, Form, FormGroup, FormTextArea, Grid, GridColumn, Header, Icon, Message, TextArea } from 'semantic-ui-react';
+import { Button, Confirm, Form, FormGroup, FormTextArea, Grid, GridColumn, GridRow, Header, Icon, Message, TextArea } from 'semantic-ui-react';
 import EvaluationModelsService from "../services/EvaluationModelsService";
 import Cookies from 'js-cookie';
 import EvaluatedService from '../services/EvaluatedService';
@@ -115,14 +115,22 @@ const question = {
                   </Message>
               </Grid.Column>
             </Grid.Row>
-          </Grid>
 
-                 <div className='evaName'>
-                 <Form.Input
+            <GridRow>
+              <GridColumn width={5}>
+              </GridColumn>
+
+              <GridColumn width={6}>
+                  <Form.Input
                   label='Evaluated Name'
                   placeholder='Evaluated name'
                   />
-                 </div>
+              </GridColumn>
+
+              <GridColumn width={5}>
+              </GridColumn>
+            </GridRow>
+          </Grid>
 
           <div>
               {

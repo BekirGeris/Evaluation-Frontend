@@ -6,6 +6,7 @@ import EvaluationModelsService from '../services/EvaluationModelsService';
 import EvaTextInput from '../utillities/customFormControls/EvaTextInput';
 import { Button, FormGroup, Grid, GridColumn, GridRow, Icon, Input } from 'semantic-ui-react';
 import { Formik, Form} from "formik";
+import EvaNumberInput from '../utillities/customFormControls/EvaNumberInput';
 
 export default function ParamaterAdd() {
 
@@ -136,38 +137,38 @@ const onSubmit = values => {
 
             <GridRow style={{marginBottom: "3%"}}>
             <GridColumn width={3}>
-                    <EvaTextInput name="poor1" placeholder="Poor 1" label="Poor 1" />
-                    <EvaTextInput name="poor2" placeholder="Poor 2" label="Poor 2" />
-                    <EvaTextInput name="poor3" placeholder="Poor 3" label="Poor 3" />
-                    <EvaTextInput name="poor4" placeholder="Poor 4" label="Poor 4" />
+                    <EvaNumberInput name="poor1" placeholder="Poor 1" label="Poor 1" />
+                    <EvaNumberInput name="poor2" placeholder="Poor 2" label="Poor 2" />
+                    <EvaNumberInput name="poor3" placeholder="Poor 3" label="Poor 3" />
+                    <EvaNumberInput name="poor4" placeholder="Poor 4" label="Poor 4" />
               </GridColumn>
                   
               <GridColumn width={3}>
-                    <EvaTextInput name="unsatisfactory1" placeholder="Unsatisfactory 1" label="Unsatisfactory 1" />
-                    <EvaTextInput name="unsatisfactory2" placeholder="Unsatisfactory 2" label="Unsatisfactory 2" />
-                    <EvaTextInput name="unsatisfactory3" placeholder="Unsatisfactory 3" label="Unsatisfactory 3" />
-                    <EvaTextInput name="unsatisfactory4" placeholder="Unsatisfactory 4" label="Unsatisfactory 4" />
+                    <EvaNumberInput name="unsatisfactory1" placeholder="Unsatisfactory 1" label="Unsatisfactory 1" />
+                    <EvaNumberInput name="unsatisfactory2" placeholder="Unsatisfactory 2" label="Unsatisfactory 2" />
+                    <EvaNumberInput name="unsatisfactory3" placeholder="Unsatisfactory 3" label="Unsatisfactory 3" />
+                    <EvaNumberInput name="unsatisfactory4" placeholder="Unsatisfactory 4" label="Unsatisfactory 4" />
               </GridColumn>
 
               <GridColumn width={3}>
-                    <EvaTextInput name="average1" placeholder="Average 1" label="Average 1" />
-                    <EvaTextInput name="average2" placeholder="Average 2" label="Average 2" />
-                    <EvaTextInput name="average3" placeholder="Average 3" label="Average 3" />
-                    <EvaTextInput name="average4" placeholder="Average 4" label="Average 4" />
+                    <EvaNumberInput name="average1" placeholder="Average 1" label="Average 1" />
+                    <EvaNumberInput name="average2" placeholder="Average 2" label="Average 2" />
+                    <EvaNumberInput name="average3" placeholder="Average 3" label="Average 3" />
+                    <EvaNumberInput name="average4" placeholder="Average 4" label="Average 4" />
               </GridColumn>
 
               <GridColumn width={3}>
-                    <EvaTextInput name="good1" placeholder="Good 1" label="Good 1" />
-                    <EvaTextInput name="good2" placeholder="Good 2" label="Good 2" />
-                    <EvaTextInput name="good3" placeholder="Good 3" label="Good 3" />
-                    <EvaTextInput name="good4" placeholder="Good 4" label="Good 4" />
+                    <EvaNumberInput name="good1" placeholder="Good 1" label="Good 1" />
+                    <EvaNumberInput name="good2" placeholder="Good 2" label="Good 2" />
+                    <EvaNumberInput name="good3" placeholder="Good 3" label="Good 3" />
+                    <EvaNumberInput name="good4" placeholder="Good 4" label="Good 4" />
               </GridColumn>
 
               <GridColumn width={3}>
-                    <EvaTextInput name="excellent1" placeholder="Excellent 1" label="Excellent 1" />
-                    <EvaTextInput name="excellent2" placeholder="Excellent 2" label="Excellent 2" />
-                    <EvaTextInput name="excellent3" placeholder="Excellent 3" label="Excellent 3" />
-                    <EvaTextInput name="excellent4" placeholder="Excellent 4" label="Excellent 4" />
+                    <EvaNumberInput name="excellent1" placeholder="Excellent 1" label="Excellent 1" />
+                    <EvaNumberInput name="excellent2" placeholder="Excellent 2" label="Excellent 2" />
+                    <EvaNumberInput name="excellent3" placeholder="Excellent 3" label="Excellent 3" />
+                    <EvaNumberInput name="excellent4" placeholder="Excellent 4" label="Excellent 4" />
               </GridColumn>
             </GridRow>
           </Grid>
@@ -175,7 +176,7 @@ const onSubmit = values => {
           <Button animated="fade" color="teal" type="submit">
               <Button.Content visible>Save</Button.Content>
               <Button.Content hidden>
-                  <Icon name="upload" />
+                  <Icon name="save" />
               </Button.Content>
           </Button>
           
