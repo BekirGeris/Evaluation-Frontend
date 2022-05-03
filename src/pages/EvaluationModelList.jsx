@@ -23,8 +23,8 @@ export default function EvaluationModelList() {
       history.push("/HomePage/EvaluatedAdd")
     }
 
-    function goEvaluated() {
-
+    function goEvaluated(evaluationModelId) {
+      setCookie('evaluationModelId', evaluationModelId, { path: '/' });
       history.push("/HomePage/EvaluatedList")
     }
 
@@ -59,7 +59,7 @@ export default function EvaluationModelList() {
                                 <Button type="submit" onClick={() => { goEvaluate(evaluationModel.evaluationModelId) }} basic color='green'>
                                   Evaluate
                                 </Button>
-                                <Button type="submit" onClick={() => { goEvaluated() }} basic color='blue'>
+                                <Button type="submit" onClick={() => { goEvaluated(evaluationModel.evaluationModelId) }} basic color='blue'>
                                   Evaluated
                                 </Button>
                               </div>

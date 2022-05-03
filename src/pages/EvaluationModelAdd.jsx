@@ -4,6 +4,7 @@ import { Button, Form, FormField, FormGroup, Icon, Image, Input, List, Select, T
 import EvaluationModelsService from "../services/EvaluationModelsService";
 import { useCookies } from 'react-cookie';
 import Cookies from 'js-cookie';
+import { toast } from 'react-toastify';
 
 export default function EvaluationModelAdd() {
 
@@ -145,32 +146,32 @@ export default function EvaluationModelAdd() {
       function textEmptyControl(){
           let flag = true;
           if(evaluationModels.evaluationModelName === "" || evaluationModels.parameterModelId === -1 || evaluationModels.decs === ""){
-              alert("Tüm Bilgileri Giriniz.")
+            toast.error("Tüm Bilgileri Giriniz.")
               flag = false;
               return;
           }
 
           if(evaluationModels.topicModelDtos.length === 0){
-            alert("En Az bir konu eklemeniz gerekmektedir.")
+            toast.error("En Az bir konu eklemeniz gerekmektedir.")
             flag = false;
             return;
           }
 
           evaluationModels.topicModelDtos.forEach((topic) => {
               if(topic.weight === 0 || topic.topicName === "") {
-                alert("Lütfen konu bilgilerini giriniz.")
+                toast.error("Lütfen konu bilgilerini giriniz.")
                 flag = false;
                 return;
               }
             if(topic.questionModelDtos.length === 0){
-                alert("Her konunun altında en az bir soru bulunmalıdır.")
+                toast.error("Her konunun altında en az bir soru bulunmalıdır.")
                 flag = false;
                 return;
             }
 
             topic.questionModelDtos.forEach((question) => {
                 if(question.weight === 0 || question.question === ""){
-                    alert("Lütfen soru bilgilerini giriniz.")
+                    toast.error("Lütfen soru bilgilerini giriniz.")
                     flag = false;
                     return;
                 }
@@ -186,8 +187,9 @@ export default function EvaluationModelAdd() {
             evaluationModelsService.addEvaluationModel(evaluationModels).then((result) => {
                 if(result.data.success){
                     history.push("/HomePage/EvaluationModelList");
+                    toast.success(result.data.message)
                   }else{
-                    alert(result.data.message);
+                    toast.error(result.data.message)
                   }
               });
           }
@@ -198,23 +200,35 @@ export default function EvaluationModelAdd() {
     <h1>New Evaluation Model</h1>
     <Form className="ui form">
             <FormGroup widths="equal">
-            <Form.Input
-            text={event => setEvaluationName(event)}
-            id='form-input-control-first-name'
-            control={Input}
-            label='Evaluation Model Name'
-            placeholder='Evaluation model name'
-            onChange={setEvaluationName}
-            />
-            <Form.Select
-                    id= 'form-select-control-gender'
-                    options={parameterModels.data}
-                    label={{ children: 'Parameter Model', htmlFor: 'form-select-control-gender' }}
-                    placeholder='Parameter Model'
-                    search
-                    searchInput={{ id: 'form-select-control-gender' }}
-                    onChange={setParameterId}
+                <Form.Input
+                text={event => setEvaluationName(event)}
+                id='form-input-control-first-name'
+                control={Input}
+                label='Evaluation Model Name'
+                placeholder='Evaluation model name'
+                onChange={setEvaluationName}
                 />
+
+                <div>
+                  <Form.Select
+                  id= 'form-select-control-gender'
+                  options={parameterModels.data}
+                  label={{ children: 'Parameter Model', htmlFor: 'form-select-control-gender' }}
+                  placeholder='Parameter Model'
+                  search
+                  searchInput={{ id: 'form-select-control-gender' }}
+                  onChange={setParameterId}
+                  />
+
+                  {parameterModels.data.length === 0 ? 
+                    <Button onClick={() => {history.push("/HomePage/ParamaterAdd")}}>
+                      Add Paramater
+                    </Button>
+                  :
+                    <div></div>
+                  }
+                </div>
+
                 <Form.TextArea
                 style={{width: "670px"}}
                 id='form-textarea-control-opinion'
@@ -226,10 +240,10 @@ export default function EvaluationModelAdd() {
         </FormGroup>
 
         <Button.Group>
-        <Button icon='minus' onClick={event => handleTopicRemove(event)}>
+        <Button style={{marginBottom: "5%"}} icon='minus' onClick={event => handleTopicRemove(event)}>
             Remove Topic
         </Button>
-        <Button style={{marginLeft:"5px"}} icon='minus' onClick={event => handleTopicAdd(event)}>
+        <Button style={{marginLeft:"5px", marginBottom: "5%"}} icon='minus' onClick={event => handleTopicAdd(event)}>
             Add Topic
         </Button>
         </Button.Group>
@@ -310,11 +324,12 @@ export default function EvaluationModelAdd() {
             }
         </div>
 
-        <div className='ui two buttons'>
-                <Button type="submit" onClick={textEmptyControl} basic color='green'>
-                    Save
-                </Button>
-        </div>
+        <Button animated="fade" color="teal" onClick={textEmptyControl}>
+              <Button.Content visible>Save</Button.Content>
+              <Button.Content hidden>
+                  <Icon name="save" />
+              </Button.Content>
+          </Button>
     </Form>
 </div>
     // <Formik>

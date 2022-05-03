@@ -15,4 +15,16 @@ export default class EvaluatedService{
     addEvaluatedDto(evaluatedDto){
         return axios.post(BASE_URL +  "addEvaluatedDto", evaluatedDto)
     }
+
+    evaluationCalculate(evaluatedDto){
+        return axios.post(BASE_URL +  "evaluationCalculate", evaluatedDto)
+    }
+
+    getEvaluatedDtoRequest(evaluationId){
+        return axios.get(BASE_URL + "getEvaluatedDtoRequest?evaluationId=" + evaluationId)
+    }
+
+    getEvaluatedWithEvaluationId(evaluationId){
+        return axios.get(BASE_URL + "getEvaluatedWithEvaluationId?evaluationId=" + evaluationId)
+    }
 }
