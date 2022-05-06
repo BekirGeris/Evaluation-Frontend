@@ -7,6 +7,7 @@ import EvaTextInput from '../utillities/customFormControls/EvaTextInput';
 import { Button, FormGroup, Grid, GridColumn, GridRow, Icon, Input } from 'semantic-ui-react';
 import { Formik, Form} from "formik";
 import EvaNumberInput from '../utillities/customFormControls/EvaNumberInput';
+import { toast } from 'react-toastify';
 
 export default function ParamaterAdd() {
 
@@ -110,7 +111,7 @@ const onSubmit = values => {
     }
    
     evaluationModelsService.addParameterModel(data).then((result) => {
-      alert(result.data.message)
+      toast.success(result.data.message)
       if(result.data.success) {
         history.push("/HomePage/EvaluationModelList");
       }

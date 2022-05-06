@@ -3,6 +3,7 @@ import UserService from "../services/UserService";
 import { useHistory } from "react-router-dom";
 import { useCookies } from 'react-cookie';
 import Cookies from 'js-cookie';
+import { toast } from "react-toastify";
 
 export default function Login() {
 
@@ -29,7 +30,7 @@ export default function Login() {
             setCookies(result.data.data.userName, result.data.data.password, result.data.data.userId);
             history.push("/HomePage/EvaluationModelList");
           }else{
-            alert(result.data.message);
+            toast.error(result.data.message);
           }
         });
         if(event !== undefined)
@@ -46,7 +47,7 @@ export default function Login() {
           if(result.data.success){
             onLogin();
           }else{
-            alert(result.data.message);
+            toast.error(result.data.message);
           }
         });
         event.preventDefault();

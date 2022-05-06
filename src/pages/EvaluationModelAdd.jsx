@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
-import { Button, Form, FormField, FormGroup, Icon, Image, Input, List, Select, TextArea, Transition } from 'semantic-ui-react'
+import { Button, Form, FormField, FormGroup, Grid, GridColumn, Icon, Image, Input, List, Select, TextArea, Transition } from 'semantic-ui-react'
 import EvaluationModelsService from "../services/EvaluationModelsService";
 import { useCookies } from 'react-cookie';
 import Cookies from 'js-cookie';
@@ -45,13 +45,13 @@ export default function EvaluationModelAdd() {
 
     const topicModel = {
         topicName: "",
-        weight: 0,
+        weight: "",
         questionModelDtos: []
     };
 
     const questionModel = {
             question: "",
-            weight: 0
+            weight: ""
     };
 
     const [evaluationModels, setEvaluationModels] = useState(evaluationModelInitital)
@@ -82,6 +82,14 @@ export default function EvaluationModelAdd() {
       function handleTopicAdd(event) {
         evaluationModels.topicModelDtos = evaluationModels.topicModelDtos.concat(
             topicModel
+        )
+        setEvaluationModels(evaluationModels);
+        setRefresh(refresh + 1)
+      }
+
+      function handleTopicAddCoppy(tItem) {
+        evaluationModels.topicModelDtos = evaluationModels.topicModelDtos.concat(
+          evaluationModels.topicModelDtos[tItem]
         )
         setEvaluationModels(evaluationModels);
         setRefresh(refresh + 1)
@@ -240,10 +248,10 @@ export default function EvaluationModelAdd() {
         </FormGroup>
 
         <Button.Group>
-        <Button style={{marginBottom: "5%"}} icon='minus' onClick={event => handleTopicRemove(event)}>
+        <Button style={{marginBottom: "5%"}} inverted color="red" onClick={event => handleTopicRemove(event)}>
             Remove Topic
         </Button>
-        <Button style={{marginLeft:"5px", marginBottom: "5%"}} icon='minus' onClick={event => handleTopicAdd(event)}>
+        <Button style={{marginLeft:"5px", marginBottom: "5%"}} inverted color="green" onClick={event => handleTopicAdd(event)}>
             Add Topic
         </Button>
         </Button.Group>
@@ -255,9 +263,22 @@ export default function EvaluationModelAdd() {
             {
                 evaluationModels.topicModelDtos.map((topic, item) => (
                     <Form className='topicList'>
-                        <h2>Topic {item + 1}</h2>
+
+                        <Grid style={{width: "1000px"}}>
+                          <GridColumn width={15}>
+                              <h2 style={{textAlign: "center", paddingLeft: "10%"}}>
+                                Topic {item + 1}
+                              </h2>
+                          </GridColumn>
+                          
+                          <GridColumn width={1}>
+                          <Icon style={{paddingLeft: "100%", margin: "10%", paddingTop: "10%"}} onClick={(event) => {handleTopicAddCoppy(item)}} name='copy' size='big'/>
+                          </GridColumn>
+                        </Grid>
+                        
                         <FormGroup>
                         <Form.Input
+                            value={topic.weight}
                             style={{width: "120px"}}
                             id='form-input-control-first-name'
                             control={Input}
@@ -269,6 +290,7 @@ export default function EvaluationModelAdd() {
                             onChange={event => {setTopicWeight(event, item)}}
                             />
                             <Form.Field
+                            value={topic.topicName}
                             style={{width: "450px"}}
                             id='form-input-control-first-name'
                             control={Input}
@@ -278,10 +300,10 @@ export default function EvaluationModelAdd() {
                             />
                             <div style={{marginTop:"26px", alignItems:"center"}}>
                             <Button.Group>
-                                <Button style={{marginLeft:"15px"}} icon='minus' onClick={event => handleQuestionRemove(event, item)}>
+                                <Button style={{marginLeft:"15px"}} inverted color="red" onClick={event => handleQuestionRemove(event, item)}>
                                     Remove Question
                                 </Button>
-                                <Button style={{marginLeft:"5px", marginRight:"20px"}} icon='minus'  onClick={event => handleQuestionAdd(event, item)}>
+                                <Button style={{marginLeft:"5px", marginRight:"20px"}} inverted color="green" onClick={event => handleQuestionAdd(event, item)}>
                                     Add Question
                                 </Button>
                             </Button.Group>
@@ -292,9 +314,10 @@ export default function EvaluationModelAdd() {
                             {
                                 evaluationModels.topicModelDtos[item].questionModelDtos.map((question, qItem) => (
                                     <Form className='questionList'>
-                                        <h2>Question  {qItem + 1}</h2>
+                                        <h2 style={{marginBottom:"0%"}}>Question  {qItem + 1}</h2>
                                         <FormGroup>
                                         <Form.Field
+                                            value={question.weight}
                                             style={{width: "120px"}}
                                             id='form-input-control-first-name'
                                             control={Input}
@@ -306,6 +329,7 @@ export default function EvaluationModelAdd() {
                                             onChange={event => {setQuestionWeight(event, item, qItem)}}
                                             />
                                             <Form.Field
+                                            value={question.question}
                                             style={{width: "770px"}}
                                             id='form-input-control-first-name'
                                             control={Input}

@@ -11,12 +11,12 @@ export default function EvaluationModelList() {
     const [evaluationModels, setEvaluationModels] = useState([])
     const [cookies, setCookie] = useCookies(['user']);
 
-    useEffect(()=>{
-        let evaluationModelsService  = new EvaluationModelsService();
+    useEffect(() => {
+      let evaluationModelsService  = new EvaluationModelsService();
         evaluationModelsService.getEvaluationModelsByUserId(Cookies.get("UserId")).then(result => {
           setEvaluationModels(result.data.data);
         });
-    });
+    }, [])
 
     function goEvaluate(evaluationModelId) {
       setCookie('evaluationModelId', evaluationModelId, { path: '/' });
@@ -56,10 +56,10 @@ export default function EvaluationModelList() {
                             </Card.Content>
                             <Card.Content extra>
                               <div className='ui two buttons'>
-                                <Button type="submit" onClick={() => { goEvaluate(evaluationModel.evaluationModelId) }} basic color='green'>
+                                <Button inverted onClick={() => { goEvaluate(evaluationModel.evaluationModelId) }} color='green'>
                                   Evaluate
                                 </Button>
-                                <Button type="submit" onClick={() => { goEvaluated(evaluationModel.evaluationModelId) }} basic color='blue'>
+                                <Button inverted onClick={() => { goEvaluated(evaluationModel.evaluationModelId) }} color='blue'>
                                   Evaluated
                                 </Button>
                               </div>
@@ -68,7 +68,7 @@ export default function EvaluationModelList() {
                   </div>
               ))
           }
-            <Card>
+            <Card onClick={() => { history.push("/HomePage/EvaluationModelAdd") }}>
               <Card.Content textAlign='center'>
                   <Image
                       size='small'
@@ -77,7 +77,7 @@ export default function EvaluationModelList() {
               </Card.Content>
               <Card.Content>
                 <div className='ui two buttons'>
-                  <Button type="submit" onClick={() => { history.push("/HomePage/EvaluationModelAdd") }} basic color='green'>
+                  <Button type="submit"  inverted color='green'>
                      Create Evaluation Model
                   </Button>
                 </div>

@@ -67,9 +67,12 @@ export default function EvaluatedAdd() {
     evaluatedService.evaluationCalculate(evaluation).then((result) => {
       if(result.data.success) {
         setEvaluatedPoint(result.data.data.evaluatedPoint)
+        toast.success(result.data.message)
+        setOpenn({open: true})
+      } else {
+        toast.error(result.data.message)
       }
     })
-    setOpenn({open: true})
   }
 
   function onCancel() {
