@@ -1,17 +1,28 @@
-import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import Cookies from 'js-cookie';
 import * as Yup from 'yup';
 import EvaluationModelsService from '../services/EvaluationModelsService';
 import EvaTextInput from '../utillities/customFormControls/EvaTextInput';
-import { Button, FormGroup, Grid, GridColumn, GridRow, Icon, Input } from 'semantic-ui-react';
+import { Button, Grid, GridColumn, GridRow, Icon } from 'semantic-ui-react';
 import { Formik, Form} from "formik";
 import EvaNumberInput from '../utillities/customFormControls/EvaNumberInput';
 import { toast } from 'react-toastify';
+import { useEffect, useState } from 'react';
+import UserService from '../services/UserService';
 
 export default function ParamaterAdd() {
 
   const history = useHistory()
+  const [session, setSession] = useState()
+
+  useEffect(()=>{
+    let userService = new UserService();
+        userService.getUserBySessionUUID(Cookies.get("sessionId")).then((result) => {
+          if(result.data.success){
+            setSession(result.data.data)
+          }
+        });
+  }, []);
 
   const initialValues = {
     parameterModelName: "",
@@ -87,7 +98,7 @@ const onSubmit = values => {
 
     let data = {
         parameterModelName: values.parameterModelName,
-        userId: Cookies.get("UserId"),
+        userId: session.userId,
         poor1: values.poor1,
         poor2: values.poor2,
         poor3: values.poor3,

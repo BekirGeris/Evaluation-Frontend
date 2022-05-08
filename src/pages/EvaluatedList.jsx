@@ -8,12 +8,12 @@ export default function EvaluatedList() {
   const [evaluatedList, setEvaluatedList] = useState([])
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     let evaluatedService = new EvaluatedService()
       
         evaluatedService.getEvaluatedWithEvaluationId(Cookies.get("evaluationModelId")).then((result) => {
           if(result.data.success) {
             setEvaluatedList(result.data.data)
-            toast.success(result.data.message)
           } else {
             toast.error(result.data.message)
           }

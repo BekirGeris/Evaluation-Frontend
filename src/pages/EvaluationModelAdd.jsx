@@ -1,26 +1,32 @@
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
-import { Button, Form, FormField, FormGroup, Grid, GridColumn, Icon, Image, Input, List, Select, TextArea, Transition } from 'semantic-ui-react'
+import { Button, Form, FormGroup, Grid, GridColumn, Icon, Input, TextArea } from 'semantic-ui-react'
 import EvaluationModelsService from "../services/EvaluationModelsService";
-import { useCookies } from 'react-cookie';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
+import UserService from '../services/UserService';
 
 export default function EvaluationModelAdd() {
 
     const history = useHistory()
-    const [cookies, setCookie] = useCookies(['user']);
 
     const initParameterModels = {
       data: []
     }
 
     const [parameterModels, setParameterModels] = useState(initParameterModels)
+    const [session, setSession] = useState()
 
     let  evaluationModelsService = new EvaluationModelsService();
 
     useEffect(() => {
-      evaluationModelsService.getParameterModelByUserId(Cookies.get("UserId")).then(result => {
+      window.scrollTo(0, 0);
+      let userService = new UserService();
+      userService.getUserBySessionUUID(Cookies.get("sessionId")).then((result) => {
+        if(result.data.success){
+          setSession(result.data.data)
+
+          evaluationModelsService.getParameterModelByUserId(result.data.data.userId).then(result => {
             result.data.data.forEach((parameterModel) => {
               parameterModels.data = parameterModels.data.concat(
                 {
@@ -33,6 +39,8 @@ export default function EvaluationModelAdd() {
             setParameterModels(parameterModels)
             setRefresh(refresh + 1)
         });
+        }
+      });
   }, [])
 
     const evaluationModelInitital = {
@@ -88,11 +96,29 @@ export default function EvaluationModelAdd() {
       }
 
       function handleTopicAddCoppy(tItem) {
+        let newItem = evaluationModels.topicModelDtos[tItem];
+        let newTopic = topicModel;
+        newTopic.topicName = newItem.topicName;
+        newTopic.weight = newItem.weight;
+        newTopic.questionModelDtos = questionListCopy(newItem.questionModelDtos)
         evaluationModels.topicModelDtos = evaluationModels.topicModelDtos.concat(
-          evaluationModels.topicModelDtos[tItem]
+          newTopic
         )
         setEvaluationModels(evaluationModels);
         setRefresh(refresh + 1)
+      }
+
+      function questionListCopy(list) {
+        let copyList = [];
+
+        list.map((questionM) => {
+          let copyQuestion = Object();
+          copyQuestion.weight = questionM.weight;
+          copyQuestion.question = questionM.question
+          copyList.push(copyQuestion)
+        })
+
+        return copyList;
       }
 
       function handleTopicRemove(event) {
@@ -191,7 +217,7 @@ export default function EvaluationModelAdd() {
           }
 
           function saveeEvaluationModelDto() {
-            evaluationModels.userId = Cookies.get("UserId");
+            evaluationModels.userId = session.userId;
             evaluationModelsService.addEvaluationModel(evaluationModels).then((result) => {
                 if(result.data.success){
                     history.push("/HomePage/EvaluationModelList");

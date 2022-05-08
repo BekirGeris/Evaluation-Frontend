@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Confirm, Dropdown, FormField, FormGroup, FormTextArea, Grid, GridColumn, GridRow, Header, Icon, Input, Menu, Message, Select, TextArea } from 'semantic-ui-react';
+import { Button, Confirm, Dropdown, FormGroup, Grid, GridColumn, GridRow, Icon, Menu, Message } from 'semantic-ui-react';
 import EvaluationModelsService from "../services/EvaluationModelsService";
 import Cookies from 'js-cookie';
 import EvaluatedService from '../services/EvaluatedService';
-import EvaNumberInput from '../utillities/customFormControls/EvaNumberInput';
-import { Field, Form, Formik, yupToFormErrors } from 'formik';
+import { Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import EvaTextInput from '../utillities/customFormControls/EvaTextInput';
 import { toast } from 'react-toastify';
+import UserService from '../services/UserService';
 
 export default function EvaluatedAdd() {
 
@@ -24,11 +24,20 @@ export default function EvaluatedAdd() {
   const [evaluatedPoint, setEvaluatedPoint] = useState(undefined)
   const [evaluation, setEevaluation] = useState()
   const [open, setOpenn] = useState({open: false})
+  const [session, setSession] = useState()
 
   let evaluationModelsService = new EvaluationModelsService();
   let evaluatedService = new EvaluatedService();
-  
+
   useEffect(() => {
+    window.scrollTo(0, 0);
+    let userService = new UserService();
+      userService.getUserBySessionUUID(Cookies.get("sessionId")).then((result) => {
+        if(result.data.success){
+          setSession(result.data.data)
+        }
+      });
+
       evaluationModelsService.getEvaluationModelByEvaluationModelId(Cookies.get("evaluationModelId")).then((result) => {
         if(result.data.success) {
             setEvaluationModel(result.data)
@@ -112,7 +121,7 @@ const onSubmit = values => {
   evaluation.evaluatedLastName = values.evaluatedLastName;
   evaluation.evaluatedNumber = values.evaluatedNumber;
   evaluation.evaluationId = Cookies.get("evaluationModelId");
-  evaluation.userId = Cookies.get("UserId");
+  evaluation.userId = session.userId;
 
   let flag = true;
   evaluation.topicDtos.map((topic) => {

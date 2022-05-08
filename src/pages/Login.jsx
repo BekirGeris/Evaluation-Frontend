@@ -9,26 +9,29 @@ export default function Login() {
 
   const [userName, setUserName] = useState('')
   const [password, setPassword] = useState('')
-  const [cookies, setCookie] = useCookies(['user']);
+  const [cookie, setCookie] = useCookies(['user']);
 
   const history = useHistory()
 
   useEffect(()=>{
     let userService = new UserService();
-        userService.getByUserNameAndPassword(Cookies.get("UserName"), Cookies.get("Password")).then((result) => {
+        userService.getUserBySessionUUID(Cookies.get("sessionId")).then((result) => {
           if(result.data.success){
-            setCookies(result.data.data.userName, result.data.data.password, result.data.data.userId);
             history.push("/HomePage/EvaluationModelList");
           }
         });
-  });
+  }, []);
 
     const onLogin = function(event) {
       let userService = new UserService();
         userService.getByUserNameAndPassword(userName, password).then((result) => {
           if(result.data.success){
-            setCookies(result.data.data.userName, result.data.data.password, result.data.data.userId);
-            history.push("/HomePage/EvaluationModelList");
+            userService.addSession(result.data.data.userId).then((sessionResult) => {
+                if (sessionResult.data.success) {
+                   setCookie('sessionId', sessionResult.data.data.sessionUUID, { path: '/' });
+                   history.push("/HomePage/EvaluationModelList");
+                }
+            })
           }else{
             toast.error(result.data.message);
           }
@@ -52,12 +55,6 @@ export default function Login() {
         });
         event.preventDefault();
     };
-
-    const setCookies = function(name, pass, id) {
-            setCookie('UserName', name, { path: '/' });
-            setCookie('Password', pass, { path: '/' });
-            setCookie('UserId', id, { path: '/' });
-    }
 
   return (
     <div class="container" id="container">

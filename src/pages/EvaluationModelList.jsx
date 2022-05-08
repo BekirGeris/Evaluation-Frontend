@@ -1,22 +1,33 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom';
-import { Button, Card, CardGroup, Header, Icon, Image, Menu, Table } from 'semantic-ui-react';
+import { Button, Card, Header, Image } from 'semantic-ui-react';
 import EvaluationModelsService from '../services/EvaluationModelsService';
 import { useCookies } from 'react-cookie';
 import Cookies from 'js-cookie';
+import UserService from '../services/UserService';
 
 export default function EvaluationModelList() {
 
     const history = useHistory()
     const [evaluationModels, setEvaluationModels] = useState([])
-    const [cookies, setCookie] = useCookies(['user']);
+    const [cookie, setCookie] = useCookies(['user']);
+    const [session, setSession] = useState()
 
     useEffect(() => {
+      window.scrollTo(0, 0);
+      let userService = new UserService();
       let evaluationModelsService  = new EvaluationModelsService();
-        evaluationModelsService.getEvaluationModelsByUserId(Cookies.get("UserId")).then(result => {
-          setEvaluationModels(result.data.data);
-        });
-    }, [])
+
+      userService.getUserBySessionUUID(Cookies.get("sessionId")).then((result) => {
+        if(result.data.success){
+          setSession(result.data.data)
+
+          evaluationModelsService.getEvaluationModelsByUserId(result.data.data.userId).then(result => {
+            setEvaluationModels(result.data.data);
+          });
+        }
+      });
+    }, []);
 
     function goEvaluate(evaluationModelId) {
       setCookie('evaluationModelId', evaluationModelId, { path: '/' });
@@ -36,7 +47,7 @@ export default function EvaluationModelList() {
               evaluationModels.map(evaluationModel => (
                   <div className='card' key={evaluationModel.evaluationModelId}>
                           <Card>
-                            <Card.Content>
+                            <Card.Content onClick={() => { goEvaluate(evaluationModel.evaluationModelId) }}>
                               <Image
                                 floated='right'
                                 size='mini'

@@ -1,25 +1,33 @@
-import React, { useEffect, useState } from 'react'
-import { Button, Container, Dropdown, Menu } from 'semantic-ui-react'
+import React, { useState } from 'react'
+import { Dropdown, Menu } from 'semantic-ui-react'
 import Search from './Search'
 import SignedOut from './SignedOut'
 import SignedIn from './SignedIn'
 import { useHistory } from 'react-router-dom'
 import { useCookies } from 'react-cookie';
+import UserService from '../services/UserService'
+import Cookies from 'js-cookie'
+import { toast } from 'react-toastify'
 
 export default function Navi() {
 
-    const [cookies, setCookie] = useCookies(['user']);
+    const [cookie, setCookie] = useCookies(['user']);
 
     const [isAuthenticaten, setIsAuthenticaten] = useState(true)
 
     const history = useHistory()
 
     function handleSignOut() {
-        setIsAuthenticaten(false)
-        setCookie('UserName', "", { path: '/' });
-        setCookie('Password', "", { path: '/' });
-        setCookie('UserId', "", { path: '/' });
-        history.push("/")
+        let userService = new UserService();
+        userService.deleteSession(Cookies.get("sessionId")).then((result) => {
+            if (result.data.success) {
+                setCookie('sessionId', "", { path: '/' });
+                setCookie('evaluationModelId', "", { path: '/' });
+                history.push("/")
+            } else {
+                toast.error("Çıkış Yapılamadı.")
+            }
+        })
     }
 
     function handleSignIn() {
