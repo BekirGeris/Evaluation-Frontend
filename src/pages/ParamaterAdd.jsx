@@ -52,44 +52,84 @@ const validationSchema = Yup.object({
         parameterModelName: Yup.string()
         .required("Gerekli"),
         poor1: Yup.number()
+        .min(0)
+        .max(100)
         .required("Gerekli"),
         poor2: Yup.number()
+        .min(0)
+        .max(100)
         .required("Gerekli"),
         poor3: Yup.number()
+        .min(0)
+        .max(100)
         .required("Gerekli"),
         poor4: Yup.number()
+        .min(0)
+        .max(100)
         .required("Gerekli"),
         unsatisfactory1: Yup.number()
+        .min(0)
+        .max(100)
         .required("Gerekli"),
         unsatisfactory2: Yup.number()
+        .min(0)
+        .max(100)
         .required("Gerekli"),
         unsatisfactory3: Yup.number()
+        .min(0)
+        .max(100)
         .required("Gerekli"),
         unsatisfactory4: Yup.number()
+        .min(0)
+        .max(100)
         .required("Gerekli"),
         average1: Yup.number()
+        .min(0)
+        .max(100)
         .required("Gerekli"),
         average2: Yup.number()
+        .min(0)
+        .max(100)
         .required("Gerekli"),
         average3: Yup.number()
+        .min(0)
+        .max(100)
         .required("Gerekli"),
         average4: Yup.number()
+        .min(0)
+        .max(100)
         .required("Gerekli"),
         good1: Yup.number()
+        .min(0)
+        .max(100)
         .required("Gerekli"),
         good2: Yup.number()
+        .min(0)
+        .max(100)
         .required("Gerekli"),
         good3: Yup.number()
+        .min(0)
+        .max(100)
         .required("Gerekli"),
         good4: Yup.number()
+        .min(0)
+        .max(100)
         .required("Gerekli"),
         excellent1: Yup.number()
+        .min(0)
+        .max(100)
         .required("Gerekli"),
         excellent2: Yup.number()
+        .min(0)
+        .max(100)
         .required("Gerekli"),
         excellent3: Yup.number()
+        .min(0)
+        .max(100)
         .required("Gerekli"),
         excellent4: Yup.number()
+        .min(0)
+        .max(100)
         .required("Gerekli"),
 });
 
