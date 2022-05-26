@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import * as Yup from 'yup';
 import EvaluationModelsService from '../services/EvaluationModelsService';
 import EvaTextInput from '../utillities/customFormControls/EvaTextInput';
-import { Button, Grid, GridColumn, GridRow, Icon } from 'semantic-ui-react';
+import { Button, Grid, GridColumn, GridRow, Icon, Message } from 'semantic-ui-react';
 import { Formik, Form} from "formik";
 import EvaNumberInput from '../utillities/customFormControls/EvaNumberInput';
 import { toast } from 'react-toastify';
@@ -162,9 +162,11 @@ const onSubmit = values => {
     }
    
     evaluationModelsService.addParameterModel(data).then((result) => {
-      toast.success(result.data.message)
       if(result.data.success) {
+        toast.success(result.data.message)
         history.push("/HomePage/EvaluationModelList");
+      } else {
+        toast.error(result.data.message)
       }
     })
 };
@@ -224,6 +226,12 @@ const onSubmit = values => {
               </GridColumn>
             </GridRow>
           </Grid>
+
+          <Message
+          negative
+          header='Önemli Not!'
+          content='Bu model değerlendirmenin puanlandırılmasında kullanıcak. Yani sonuçlar burada girilen sayılara göre hesaplanacaktır.'
+          />
 
           <Button animated="fade" color="teal" type="submit">
               <Button.Content visible>Save</Button.Content>

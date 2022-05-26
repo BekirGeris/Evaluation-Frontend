@@ -4,6 +4,10 @@ const BASE_URL = "http://localhost:9999/api/evaluated/";
 
 export default class EvaluatedService{
 
+    evaluationCalculate(evaluatedDto){
+        return axios.post(BASE_URL +  "evaluationCalculate", evaluatedDto)
+    }
+    
     getQuestionsByTopicId(topicId){
         return axios.get(BASE_URL + "getByTopicId?topicId=" + topicId)
     }
@@ -14,10 +18,6 @@ export default class EvaluatedService{
 
     addEvaluatedDto(evaluatedDto){
         return axios.post(BASE_URL +  "addEvaluatedDto", evaluatedDto)
-    }
-
-    evaluationCalculate(evaluatedDto){
-        return axios.post(BASE_URL +  "evaluationCalculate", evaluatedDto)
     }
 
     getEvaluatedDtoRequest(evaluationId){

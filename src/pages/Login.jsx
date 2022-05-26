@@ -63,11 +63,11 @@ export default function Login() {
           <h1 class="form__title">Login</h1>
           <div class="form__input-group">
             <label for="username">Username: </label>
-            <input onChange={event => setUserName(event.target.value)} type="text" maxlength="20" required/> 
+            <input onChange={event => setUserName(event.target.value)} type="text" id="text" maxlength="20" required/> 
           </div>
           <div class="form__input-group">
             <label for="pass">Password: </label>
-            <input onChange={event => setPassword(event.target.value)} type="password" maxlength="20" required/> 
+            <input onChange={event => setPassword(event.target.value)} type="password" id="password" maxlength="20" required/> 
           </div>
           <div>
             <button type="submit" class="form__button">Submit</button>
@@ -80,11 +80,11 @@ export default function Login() {
          <h1 class="form__title">Register</h1>
          <div class="form__input-group">
            <label for="username"> Username: </label>
-           <input onChange={event => setUserName(event.target.value)} type="text" maxlength="20" required/>
+           <input onChange={event => setUserName(event.target.value)} type="text" id="text2" maxlength="20" required/>
          </div>
           <div class="form__input-group">
             <label for="pass">Password: </label>
-            <input onChange={event => setPassword(event.target.value)} type="password" maxlength="20" required/> 
+            <input onChange={event => setPassword(event.target.value)} type="password" id="password2" maxlength="20" required/> 
           </div>
          <button class="form__button" type="submit">Submit</button>
        </form>
@@ -112,13 +112,21 @@ function loginScript(){
     const signUpButton = document.getElementById('signUp');
     const signInButton = document.getElementById('signIn');
     const container = document.getElementById('container');
+    const name = document.getElementById('text');
+    const pass = document.getElementById('password');
+    const name2 = document.getElementById('text2');
+    const pass2 = document.getElementById('password2');
 
     signUpButton.addEventListener('click', () => {
       container.classList.add('right-panel-active');
+      name2.value = "";
+      pass2.value = "";
     });
     
     signInButton.addEventListener('click', () => {
         container.classList.remove('right-panel-active');
+        name.value = "";
+        pass.value = "";
     });
 }
 
