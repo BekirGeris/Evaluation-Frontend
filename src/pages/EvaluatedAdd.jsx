@@ -22,6 +22,7 @@ export default function EvaluatedAdd() {
   const [evaluationModel, setEvaluationModel] = useState()
   const [parameterModel, setParameterModel] = useState()
   const [evaluatedPoint, setEvaluatedPoint] = useState(undefined)
+  const [evaluatedStatus, setEvaluatedStatus] = useState(undefined)
   const [evaluation, setEevaluation] = useState()
   const [open, setOpenn] = useState({open: false})
   const [session, setSession] = useState()
@@ -76,6 +77,7 @@ export default function EvaluatedAdd() {
     evaluatedService.evaluationCalculate(evaluation).then((result) => {
       if(result.data.success) {
         setEvaluatedPoint(result.data.data.evaluatedPoint)
+        setEvaluatedStatus(result.data.data.evaluatedStatus)
         toast.success(result.data.message)
         setOpenn({open: true})
       } else {
@@ -142,7 +144,10 @@ const onSubmit = values => {
   return (
     <div>
           <Confirm
-            content={"Hesaplanan Puan: " + evaluatedPoint}
+            content={<div style={{margin:"5%"}}>
+              <p>{"Hesaplanan Puan: " + evaluatedPoint}</p>
+              <p>{"Durum: " + evaluatedStatus}</p>
+            </div>}
             header={evaluatedPoint === undefined ? 'Hesaplanıyor...' : 'Hesaplama Tamamlandı'}
             open={open.open}
             confirmButton="Save" 

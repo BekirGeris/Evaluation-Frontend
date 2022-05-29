@@ -36,6 +36,7 @@ export default function EvaluatedList() {
                                   <Table.HeaderCell>Evaluated Last Name</Table.HeaderCell>
                                   <Table.HeaderCell>Evaluated Number</Table.HeaderCell>
                                   <Table.HeaderCell>Evaluated Point</Table.HeaderCell>
+                                  <Table.HeaderCell>Evaluated Status</Table.HeaderCell>
                               </Table.Row>
                           </Table.Header>
 
@@ -48,6 +49,7 @@ export default function EvaluatedList() {
                                           <Table.Cell>{evaluated.evaluatedLastName}</Table.Cell>
                                           <Table.Cell>{evaluated.evaluatedNumber}</Table.Cell>
                                           <Table.Cell>{evaluated.evaluatedPoint}</Table.Cell>
+                                          <Table.Cell>{evaluated.evaluatedStatus}</Table.Cell>
                                       </Table.Row>
                                   ))
                               }
