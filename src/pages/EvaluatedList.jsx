@@ -48,7 +48,13 @@ export default function EvaluatedList() {
                                           <Table.Cell>{evaluated.evaluatedFirstName}</Table.Cell>
                                           <Table.Cell>{evaluated.evaluatedLastName}</Table.Cell>
                                           <Table.Cell>{evaluated.evaluatedNumber}</Table.Cell>
-                                          <Table.Cell>{evaluated.evaluatedPoint}</Table.Cell>
+                                          <Table.Cell>{
+                                          
+                                            <p style={{textAlign: "center", fontWeight: "bold", color:evaluated.evaluatedStatus === "Excellent" ? "#7cfc00" : evaluated.evaluatedStatus === "Good" ? "#A9DFBF" : evaluated.evaluatedStatus === "Average" ? "#ffd700" : evaluated.evaluatedStatus === "Unsatisfactory" ? "#ff1493" : evaluated.evaluatedStatus === "Poor" ? "#dc143c" : "#000000"}}>
+                                                 {evaluated.evaluatedPoint}
+                                            </p>
+                                        
+                                          }</Table.Cell>
                                           <Table.Cell>{evaluated.evaluatedStatus}</Table.Cell>
                                       </Table.Row>
                                   ))
