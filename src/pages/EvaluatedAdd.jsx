@@ -96,6 +96,7 @@ export default function EvaluatedAdd() {
     evaluatedService.addEvaluatedDto(evaluation).then((result) => {
       if(result.data.success) {
         toast.success(result.data.message)
+        window.location.reload()
       } else {
         toast.error(result.data.message)
       }
@@ -163,7 +164,7 @@ const onSubmit = values => {
         
         <FormGroup widths="equal">
             <div>
-          <Grid style={{width: "1300px", marginBottom: "2%"}}>
+          <Grid style={{width: "1300px", marginBottom: "1%"}}>
             <Grid.Row>
               <Grid.Column width={8}>
                   <Message info>
@@ -212,8 +213,8 @@ const onSubmit = values => {
               {
                   evaluationModel.data.topicModelDtos.map((topic, item) => (
                       <Form className='topicList'>
-                        <h2>Topic {item + 1}</h2>
-                          <Grid style={{width: "950px", marginBottom:"1%", marginLeft:"1%"}}>
+                        <h3>Topic {item + 1}</h3>
+                          <Grid style={{width: "950px", marginBottom:"0.1em", marginLeft:"1%"}}>
                             <Grid.Row>
                               <Grid.Column width={2}>
                                   <Message>
@@ -240,8 +241,8 @@ const onSubmit = values => {
                               {
                                   evaluationModel.data.topicModelDtos[item].questionModelDtos.map((question, qItem) => (
                                       <Form className='questionList'>
-                                        <h2>Question {qItem + 1}</h2>
-                                          <Grid style={{width: "1100px", marginBottom:"1%"}}>
+                                        <h3>Question {qItem + 1}</h3>
+                                          <Grid style={{width: "1100px", marginBottom:"0.1em"}}>
                                             <Grid.Row>
                                               <Grid.Column width={2}>
                                                 <Message>
